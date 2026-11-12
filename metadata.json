@@ -1,0 +1,6 @@
+{
+  "name": "IntentPay",
+  "description": "Intelligent Commerce. Controlled Payments. AI-powered agentic commerce with strict policy enforcement, human authorization, and PayPal Sandbox execution.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
