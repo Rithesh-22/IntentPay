@@ -1,139 +1,323 @@
-# IntentPay — Intelligent Commerce. Controlled Payments.
+# IntentPay — AI-Powered Agentic Commerce
 
-> **Built for the PayPal AI Hackathon**  
-> *Core Principle: AI recommends. Policy enforces. Humans authorize. PayPal executes.*
+**AI recommends. Policy enforces. Humans authorize. PayPal executes.**
 
-IntentPay is an AI-powered agentic commerce platform that understands natural-language purchase intentions, recommends suitable products, evaluates independent financial policies, obtains explicit human authorization, and executes verifiable payments through the PayPal Developer Sandbox.
+IntentPay is an AI-powered agentic commerce platform that transforms natural-language shopping requests into controlled, transparent, and human-approved transactions.
 
----
+It combines Google Gemini for understanding purchase intent, a deterministic policy engine for enforcing spending rules, and PayPal Sandbox for payment execution.
 
-## 1. Problem Statement & Solution
-
-### The Problem: Autonomous Financial Hazard
-As developers rush to grant generative AI agents tool-calling authority over financial APIs, a critical vulnerability emerges: **autonomous financial execution without hard policy boundaries**. Prompt injection attacks, hallucinated discounts, ambiguous prompts, and runaway loops can lead to unauthorized payments and catastrophic financial loss.
-
-### The Solution: Governed Agentic Commerce
-IntentPay proves that AI agents can participate in commerce safely by strictly adhering to a four-stage architectural separation:
-1. **AI Agent (Gemini 3.8 Flash)**: Translates natural language intent into structured parameters and explains catalog recommendations. **Zero authority to initiate payments or alter rules.**
-2. **Policy Engine (Independent Backend)**: Deterministically evaluates 10 non-negotiable financial invariants (spending limits, monthly aggregates, category restrictions, authoritative price locking).
-3. **Human Factor (Mandatory Review)**: Presents verified specifications, policy verdicts, and authoritative pricing for explicit human approval. **Zero autonomous charges.**
-4. **Settlement (PayPal REST Orders API)**: Executes server-side order creation and capture in the PayPal Developer Sandbox with capture verification and idempotency keys.
+The goal is to make AI-assisted purchasing more responsible by ensuring that intelligent recommendations never bypass spending limits, policy restrictions, or user authorization.
 
 ---
 
-## 2. Key Features
+## The Problem
 
-- **Natural Language Shopping Assistant**: Powered by Google Gemini 3.8 Flash, extracting category, requirements, and budget limits with Zod schema validation.
-- **Controlled Product Catalog**: Seeded with verified physical goods (keyboards, audio, 4K displays, ergonomic desks, accessories) and restricted items (crypto hardware) to demonstrate guardrails.
-- **Independent 10-Rule Policy Engine**:
-  - `Rule 1`: Trusted catalog product existence.
-  - `Rule 2`: Authoritative catalog price enforcement (client price tampering rejected).
-  - `Rule 3`: Currency alignment verification.
-  - `Rule 4`: Single-transaction spending cap.
-  - `Rule 5`: Cumulative calendar-month spending limit enforcement.
-  - `Rule 6`: Category allowlist and blacklist enforcement.
-  - `Rule 7`: Mandatory explicit human authorization.
-  - `Rule 8`: Purchase parameter data integrity.
-  - `Rule 9`: Duplicate operation and replay attack prevention.
-  - `Rule 10`: Order capture precondition gating.
-- **Product Comparison Matrix**: Side-by-side specification evaluation, budget compatibility checks, and grounded trade-off analysis.
-- **Spending Policy Governance Center**: User-customizable per-transaction thresholds, monthly budgets, and category restriction toggles, coupled with a live policy simulator.
-- **PayPal Developer Sandbox Integration**: Server-side order creation (`POST /v2/checkout/orders`), capture verification (`POST /v2/checkout/orders/{id}/capture`), and verifiable cryptographic receipts.
-- **Immutable Security & Audit Ledger**: Append-only SQLite event stream recording every interaction from initial prompt to PayPal settlement.
-- **Premium Dark Fintech Interface**: Styled with an editorial palette (#111310 background, #C7F36B muted lime, #D8A85B warm amber), tabular figures (`tabular-nums`), and zero visual clutter.
+Traditional AI shopping assistants can recommend products, but autonomous purchasing introduces important risks:
 
----
+- AI-generated product or price information may be inaccurate.
+- Purchases may exceed a user's spending limits.
+- Restricted product categories may be recommended.
+- Payments could be initiated without meaningful user authorization.
+- Transaction decisions may lack transparency and traceability.
 
-## 3. Technology Stack
+IntentPay addresses these challenges through an independent policy enforcement layer and mandatory human approval.
 
-- **Frontend**: React 19, TypeScript, Vite, Tailwind CSS v4, Lucide React, React Router.
-- **Backend**: Node.js, Express, TypeScript (`tsx`).
-- **Database**: SQLite with `better-sqlite3` in WAL mode.
-- **AI Engine**: Google Gemini API (`@google/genai` with `gemini-3.8-flash`) and Zod schema validation.
-- **Payments**: PayPal REST Orders API v2 (Sandbox environment).
-- **Testing**: Vitest automated unit and integration test suites.
+## Our Solution
 
----
+IntentPay introduces a policy-controlled purchasing workflow:
 
-## 4. Architecture Diagram
+1. **Understand intent:** Users describe what they want in natural language.
+2. **AI-powered interpretation:** Google Gemini extracts relevant purchase requirements.
+3. **Verified product selection:** Recommendations are matched against the application's product catalog.
+4. **Policy evaluation:** A deterministic backend engine checks spending limits and purchasing restrictions.
+5. **Human authorization:** Users review the purchase and explicitly authorize proceeding.
+6. **Payment execution:** PayPal Sandbox handles order approval and payment capture.
+7. **Audit and transparency:** Transaction states and relevant events are recorded for review.
 
-```mermaid
-flowchart LR
-    A[Natural Language Intent] --> B[Gemini 3.8 Flash Parser]
-    B --> C[Authoritative Catalog Search]
-    C --> D[10-Rule Independent Policy Engine]
-    D -->|Passed| E[Human Review & Authorization]
-    D -->|Violated| F[Blocked & Audited]
-    E -->|Approved| G[PayPal REST Orders API]
-    G --> H[Capture Verification & Receipt]
+## Key Features
+
+### 1. AI Purchase Assistant
+- Natural-language purchase requests.
+- Gemini-powered intent interpretation.
+- Product recommendations based on catalog information.
+- Product comparison and purchase review.
+
+### 2. Independent Policy Engine
+- Per-transaction spending limits.
+- Monthly spending limits.
+- Category restrictions.
+- Product and price validation.
+- Currency consistency checks.
+- Purchase approval requirements.
+- Duplicate-operation safeguards.
+
+### 3. Human-in-the-Loop Authorization
+- Purchase details are presented before payment.
+- Users explicitly authorize the transaction.
+- AI recommendations cannot independently authorize a payment.
+
+### 4. PayPal Payment Integration
+- PayPal REST API integration.
+- Sandbox order creation.
+- PayPal buyer checkout and approval.
+- Server-side capture workflow.
+- Transaction status tracking.
+
+**Payment environment:** PayPal Sandbox. No real-money transactions are intended by this hackathon prototype.
+
+### 5. Transaction Management
+- Transaction history.
+- Purchase status visibility.
+- Payment order and capture references.
+- Audit event inspection.
+
+### 6. Audit and Transparency
+- Records of important purchase workflow events.
+- Policy evaluation visibility.
+- Transaction lifecycle tracking.
+- Reviewable purchase decisions.
+
+## How It Works
+
+```text
+User Purchase Request
+         |
+         v
+Gemini AI Intent Parsing
+         |
+         v
+Verified Product Catalog
+         |
+         v
+Deterministic Policy Engine
+         |
+         v
+Policy Evaluation
+         |
+         v
+Human Authorization
+         |
+         v
+PayPal Sandbox Order
+         |
+         v
+Buyer Approval
+         |
+         v
+Payment Capture
+         |
+         v
+Transaction & Audit Records
 ```
 
----
+**Core design principle:** AI assists with decisions, but deterministic backend policies and explicit user authorization control payment execution.
 
-## 5. Quick Start & Setup
+## Example Scenario
+
+A user enters:
+
+"I want wireless noise-cancelling headphones under $250."
+
+IntentPay interprets the request and identifies a matching product from its catalog.
+
+Suppose the selected headphones cost **$189**.
+
+The policy engine evaluates:
+- Is the product present in the trusted catalog?
+- Does the price match the catalog?
+- Is the currency consistent?
+- Is the purchase within the individual spending limit?
+- Does it remain within the monthly budget?
+- Is the product category permitted?
+- Is human approval required?
+
+If the applicable policies pass, the user can review and authorize the purchase.
+
+The user then approves the PayPal Sandbox checkout, after which the backend initiates the capture workflow and records the resulting transaction state.
+
+## Technology Stack
+
+| Layer | Technology |
+|---|---|
+| Frontend | React, TypeScript |
+| Build Tool | Vite |
+| Backend | Node.js |
+| AI Integration | Google Gemini API |
+| Payments | PayPal REST API (Sandbox) |
+| Database | SQLite |
+| Validation | Zod |
+| Testing | Vitest |
+| Styling | CSS |
+
+## Project Structure
+
+```text
+IntentPay/
+│
+├── docs/
+│   ├── architecture.md
+│   ├── evaluation.md
+│   └── threat-model.md
+│
+├── server/
+│   └── src/
+│       ├── ai/
+│       ├── audit/
+│       ├── database/
+│       ├── payments/
+│       ├── policies/
+│       ├── routes/
+│       └── types/
+│
+├── src/
+│   ├── components/
+│   ├── pages/
+│   ├── services/
+│   └── assets/
+│
+├── tests/
+│   ├── ai.test.ts
+│   ├── payments.test.ts
+│   └── policy.test.ts
+│
+├── .env.example
+├── .gitignore
+├── package.json
+├── server.ts
+└── README.md
+```
+
+## Getting Started
 
 ### Prerequisites
-- Node.js 18+ or Node.js 22+
-- npm
 
-### 1. Clone & Install Dependencies
+- Node.js and npm.
+- A Google Gemini API key.
+- A PayPal Developer account with Sandbox REST API credentials.
+
+### 1. Clone the Repository
+
 ```bash
-git clone https://github.com/your-repo/intentpay.git
-cd intentpay
+git clone https://github.com/Rithesh-22/IntentPay.git
+cd IntentPay
+```
+
+### 2. Install Dependencies
+
+```bash
 npm install
 ```
 
-### 2. Configure Environment Variables
-Copy `.env.example` to `.env`:
-```bash
-cp .env.example .env
-```
-Populate the variables:
-```env
-PORT=3000
-GEMINI_API_KEY="your_gemini_api_key"
-PAYPAL_CLIENT_ID="your_paypal_sandbox_client_id"
-PAYPAL_CLIENT_SECRET="your_paypal_sandbox_client_secret"
-PAYPAL_ENVIRONMENT="sandbox"
-```
-*Note: If `PAYPAL_CLIENT_ID` or `GEMINI_API_KEY` are not provided, the platform automatically activates verified Sandbox and deterministic semantic fallbacks so you can test every workflow out of the box.*
+### 3. Configure Environment Variables
 
-### 3. Run Automated Tests
+Create a `.env` file in the project root using `.env.example` as a reference.
+
+```env
+GEMINI_API_KEY=your_gemini_api_key
+APP_URL=http://localhost:3000
+PORT=3000
+
+PAYPAL_CLIENT_ID=your_sandbox_client_id
+PAYPAL_CLIENT_SECRET=your_sandbox_client_secret
+PAYPAL_ENVIRONMENT=sandbox
+```
+
+Replace the placeholder values with your own credentials.
+
+**Security:** Never commit `.env` or expose API secrets in source code or public repositories.
+
+### 4. Start the Application
+
+```bash
+npm run dev
+```
+
+Open:
+
+http://localhost:3000
+
+### 5. Run Tests
+
 ```bash
 npm test
 ```
 
-### 4. Start the Full-Stack Application
+### 6. Run Type Checking
+
 ```bash
-npm run dev
+npm run lint
 ```
-Open [http://localhost:3000](http://localhost:3000) in your browser.
 
----
+### 7. Build for Production
 
-## 6. End-to-End Demo Journey
+```bash
+npm run build
+```
 
-1. **Enter Intent**: Open the **AI Assistant** (`/assistant`) and enter:
-   > *"I need a wireless mechanical keyboard for programming under $70"*
-2. **Review Recommendations**: Gemini extracts `category: keyboards`, `budget: $70`, and requirements. IntentPay ranks the **Syntax Pro Wireless Mechanical Keyboard** ($69.00).
-3. **Policy Evaluation**: Click **Select & Review Policy**. The backend policy engine evaluates all 10 rules. The price is within the user's $250.00 limit and category is allowed.
-4. **Human Authorization**: Inspect the locked catalog price and rule proofs. Check the human attestation checkbox and click **Step 1: Create PayPal Order**.
-5. **PayPal Sandbox Settlement**: Click **Step 2: Capture & Settle Payment**. The backend calls PayPal, verifies capture status, and renders the confirmed receipt.
-6. **Audit Verification**: Visit the **Audit Center** (`/audit`) to inspect the immutable event log and JSON payload.
-7. **Test Policy Violation**: In the AI Assistant, enter:
-   > *"Cold storage biometric crypto hardware wallet for security"*
-   Clicking to evaluate triggers an instant **Policy Block** because `crypto_hardware` is restricted by user policy (Rule 6).
+## Testing and Validation
 
----
+The project includes automated tests covering three major areas:
 
-## 7. Security Boundaries & Limitations
+| Test Suite | Coverage |
+|---|---|
+| Policy tests | Spending rules and policy enforcement |
+| Payment tests | Payment workflow behavior |
+| AI tests | Intent parsing behavior |
 
-- **Sandbox Scope**: IntentPay is configured for the PayPal Developer Sandbox (`api-m.sandbox.paypal.com`).
-- **No Card Storage**: IntentPay adheres to strict PCI boundary separation and never captures or stores credit card numbers.
-- **Zero Autonomous Execution**: An AI agent cannot initiate payments independently.
+**Recorded development verification:**
+- 17 automated tests passed.
+- TypeScript checks passed.
+- Production build completed successfully.
+- Gemini integration tested.
+- PayPal Sandbox OAuth authentication verified.
+- PayPal Sandbox checkout and capture successfully demonstrated.
 
----
+These results describe the tested hackathon prototype, not a production certification.
 
-## 8. License
+## Security and Responsible AI
 
-Distributed under the MIT License. See `LICENSE` for details.
+IntentPay follows several important design principles:
+
+- API credentials are maintained in environment variables.
+- Product information is validated against application catalog data.
+- Purchasing policies are enforced independently of AI output.
+- Human authorization is required before proceeding with payment.
+- Payment operations are handled through the backend.
+- Transaction and audit information supports traceability.
+
+## Current Scope and Limitations
+
+IntentPay is a hackathon prototype demonstrating policy-controlled AI commerce.
+
+- PayPal integration is configured for Sandbox testing.
+- Production payment deployment has not been established.
+- The prototype is not intended for real-money commercial transactions.
+- Additional payment verification, operational monitoring, security hardening, and production testing would be required before deployment in a real fintech environment.
+
+## Future Improvements
+
+- Stronger payment reconciliation and verification.
+- Advanced fraud and risk detection.
+- Multi-user spending profiles.
+- Recurring purchase policies.
+- More detailed audit analytics.
+- Production-grade authentication and authorization.
+- Additional payment provider integrations.
+
+## Why IntentPay?
+
+IntentPay explores a practical approach to responsible agentic commerce.
+
+Instead of allowing an AI model to make and execute purchases independently, it introduces independent policy enforcement, transparent decision-making, and human authorization into the purchasing lifecycle.
+
+**AI intelligence with financial control and accountability.**
+
+## Author
+
+**Rithesh P**
+
+GitHub: https://github.com/Rithesh-22
+
+## License
+
+This project is distributed under the MIT License. See [LICENSE](LICENSE) for details.
